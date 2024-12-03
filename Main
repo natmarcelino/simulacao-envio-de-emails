@@ -1,0 +1,51 @@
+public class Main {
+
+        static class EmailSender extends Thread {
+            @Override
+            public void run() {
+                for (int i = 1; i <= 5; i++) {
+                    try {
+                        System.out.println("Enviando e-mail " + i + "/5...");
+                        Thread.sleep(2000); // Simula o tempo de envio (2 segundos)
+                    } catch (InterruptedException e) {
+                        System.err.println("EmailSender foi interrompido.");
+                    }
+                }
+                System.out.println("Envio de e-mails concluído!");
+            }
+        }
+
+        static class ReportProcessor extends Thread {
+            @Override
+            public void run() {
+                for (int i = 1; i <= 3; i++) {
+                    try {
+                        System.out.println("Processando relatório " + i + "/3...");
+                        Thread.sleep(3000); // Simula o tempo de processamento (3 segundos)
+                    } catch (InterruptedException e) {
+                        System.err.println("ReportProcessor foi interrompido.");
+                    }
+                }
+                System.out.println("Processamento de relatórios concluído!");
+            }
+        }
+
+        public static void main(String[] args) {
+            System.out.println("Iniciando as tarefas...");
+
+            EmailSender emailSender = new EmailSender();
+            ReportProcessor reportProcessor = new ReportProcessor();
+
+            emailSender.start();
+            reportProcessor.start();
+
+            try {
+                emailSender.join();
+                reportProcessor.join();
+            } catch (InterruptedException e) {
+                System.err.println("Main thread foi interrompida.");
+            }
+
+            System.out.println("Todos os e-mails foram enviados com sucesso!");
+        }
+    }
